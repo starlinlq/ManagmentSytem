@@ -37,4 +37,8 @@ public class User {
     @ElementCollection(fetch = FetchType.EAGER)
     List<String> roles = new ArrayList<>();
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="profile_id")
+    private Profile profile;
+
 }
