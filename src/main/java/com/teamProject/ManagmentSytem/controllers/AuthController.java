@@ -63,10 +63,6 @@ public class AuthController {
     @DeleteMapping("/user")
     public ResponseEntity<?> deleteOne(@RequestParam String user){
         try{
-            boolean userNameExists = userService.existsByUsername(user);
-            if (!userNameExists){
-                throw new EmployeeNotFoundException();
-            }
             userService.removeUser(user);
             return new ResponseEntity<>(user,HttpStatus.ACCEPTED);
         } catch (RuntimeException err){

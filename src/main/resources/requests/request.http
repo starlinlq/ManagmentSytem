@@ -1,3 +1,4 @@
+## POST NEW USER
 POST http://localhost:8081/api/v1/auth
 Content-Type: application/json
 
@@ -22,13 +23,17 @@ Content-Type: application/json
 }
 
 ###
+
+## GET ALL USERS
 GET http://localhost:8081/api/v1/auth/
 Accept: application/json
 
 ###
+
+## GET ONE USER
 GET http://localhost:8081/api/v1/auth/user?user="markyMark"
 Accept: application/json
 
 ###
-DELETE http://localhost:8081/api/v1/auth/user?user="starlin"
-Accept: applli
+DELETE http://localhost:8081/api/v1/auth/user?user=starlin
+Accept: application/json
