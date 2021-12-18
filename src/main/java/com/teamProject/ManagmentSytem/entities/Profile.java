@@ -23,13 +23,9 @@ public class Profile {
 //    User information
 
     private String firstName;
-
     private String lastName;
-
     private Date dateOfBirth;
-
     private String department;
-
     private int salary = 0;
 
     // Default values as these may not apply to all users.

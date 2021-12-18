@@ -1,6 +1,34 @@
-GET localhost:8080/api/v1/
+POST http://localhost:8081/api/v1/auth
+Content-Type: application/json
+
+{
+  "username": "starlin",
+  "email": "starlin@gmail.com",
+  "password": "password",
+  "profile": {
+    "firstName":"Robert",
+    "lastName":"Jamirez",
+    "dateOfBirth":"1950-12-15",
+    "department":"IT",
+    "salary": 20000,
+    "overtime": 0,
+    "medical": 150,
+    "bonus": 0,
+    "other": 0,
+
+    "totalOvertime": 0,
+    "ratePerHour": 0
+  }
+}
 
 ###
-GET localhost:8080/api/v1/profile
+GET http://localhost:8081/api/v1/auth/
+Accept: application/json
 
 ###
+GET http://localhost:8081/api/v1/auth/user?user="markyMark"
+Accept: application/json
+
+###
+DELETE http://localhost:8081/api/v1/auth/user?user="starlin"
+Accept: applli

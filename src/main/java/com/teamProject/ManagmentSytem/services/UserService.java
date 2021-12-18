@@ -8,8 +8,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.sql.Array;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -27,18 +30,26 @@ public class UserService {
         return userRepository.existsByEmail(email);
     }
 
+    // Create
     public User save(User user){
         user.setRoles(List.of("ROLE_USER"));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
-    public ResponseEntity<?> getAllUsers(){
-        try{
-            List<User> userList = userRepository.findAll();
-            return new ResponseEntity<>(userList, HttpStatus.OK);
-        } catch(RuntimeException err){
-            return new ResponseEntity<>("Unable to access User list",HttpStatus.NOT_FOUND);
-        }
+    // Read All users
+    public List<User> readAllUsers(){
+        List<User> userList = new ArrayList<>();
+        userList.addAll(userRepository.findAll());
+        return userList;
+    }
+
+    // Read one user by id
+    public Optional<User> readOneUserById(String userName){
+        return userRepository.findByUsername(userName);
+    }
+
+    public void removeUser(String userName){
+        userRepository.deleteByUsername(userName);
     }
 }
