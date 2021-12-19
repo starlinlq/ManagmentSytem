@@ -7,10 +7,8 @@ import com.teamProject.ManagmentSytem.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -63,6 +61,10 @@ public class AuthController {
     @DeleteMapping("/user")
     public ResponseEntity<?> deleteOne(@RequestParam String user){
         try{
+            boolean userNameExists = userService.existsByUsername(user);
+            if (!userNameExists){
+                throw new EmployeeNotFoundException();
+            }
             userService.removeUser(user);
             return new ResponseEntity<>(user,HttpStatus.ACCEPTED);
         } catch (RuntimeException err){
