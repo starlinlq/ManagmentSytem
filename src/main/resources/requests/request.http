@@ -3,13 +3,13 @@ POST http://localhost:8081/api/v1/auth
 Content-Type: application/json
 
 {
-  "username": "starlin",
+  "username": "marlonBrando",
   "email": "starlin@gmail.com",
   "password": "password",
   "profile": {
-    "firstName":"Robert",
-    "lastName":"Jamirez",
-    "dateOfBirth":"1950-12-15",
+    "firstName":"Marlin",
+    "lastName":"Brando",
+    "dateOfBirth":"1980-08-11",
     "department":"IT",
     "salary": 20000,
     "overtime": 0,
@@ -31,7 +31,7 @@ Accept: application/json
 ###
 
 ## GET ONE USER
-GET http://localhost:8081/api/v1/auth/user?user="markyMark"
+GET http://localhost:8081/api/v1/auth/user?user="starlin"
 Accept: application/json
 
 ###

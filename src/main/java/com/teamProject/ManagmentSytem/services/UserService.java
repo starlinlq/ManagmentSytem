@@ -10,6 +10,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Array;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,17 +30,20 @@ public class UserService {
     }
 
     // Create
+    @Transactional
     public User save(User user){
         user.setRoles(List.of("ROLE_USER"));
         return userRepository.save(user);
     }
 
     // Read All users
+    @Transactional
     public List<User> readAllUsers(){
         return userRepository.findAll();
     }
 
     // Read one user by id
+    @Transactional
     public Optional<User> readOneUserById(String userName){
         return userRepository.findByUsername(userName);
     }

@@ -98,7 +98,7 @@ public class AuthController {
     public ResponseEntity<?> readOne(@RequestParam String user ){
         try{
             Optional<User> userName = userService.readOneUserById(user);
-            return new ResponseEntity<>(userName.orElse(new User()),HttpStatus.OK);
+            return new ResponseEntity<>(user,HttpStatus.OK);
         } catch (RuntimeException err){
             return new ResponseEntity<>(err,HttpStatus.BAD_REQUEST);
         }
