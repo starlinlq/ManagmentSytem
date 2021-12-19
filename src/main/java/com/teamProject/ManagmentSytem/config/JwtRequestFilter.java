@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.teamProject.ManagmentSytem.entities.User;
 import com.teamProject.ManagmentSytem.services.UserService;
+import com.teamProject.ManagmentSytem.util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,7 +20,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 
 import io.jsonwebtoken.ExpiredJwtException;
-import util.JwtTokenUtil;
+
 
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {

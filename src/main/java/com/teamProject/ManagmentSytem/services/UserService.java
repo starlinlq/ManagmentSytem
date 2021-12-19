@@ -1,5 +1,6 @@
 package com.teamProject.ManagmentSytem.services;
 
+import com.teamProject.ManagmentSytem.dto.UserDto;
 import com.teamProject.ManagmentSytem.entities.User;
 import com.teamProject.ManagmentSytem.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +19,6 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
     public boolean existsByUsername(String username){
         return userRepository.existsByUsername(username);
     }
@@ -32,7 +30,6 @@ public class UserService {
     // Create
     public User save(User user){
         user.setRoles(List.of("ROLE_USER"));
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
@@ -49,5 +46,17 @@ public class UserService {
     @Transactional
     public void removeUser(String userName){
         userRepository.deleteByUsername(userName);
+    }
+
+    public UserDto toUserDto(User user){return UserMapper.toUserDto(user);}
+
+    public static class UserMapper{
+        static UserDto toUserDto(User user){
+            return UserDto.builder()
+                    .roles(user.getRoles())
+                    .username(user.getUsername())
+                    .email(user.getEmail())
+                    .build();
+        }
     }
 }

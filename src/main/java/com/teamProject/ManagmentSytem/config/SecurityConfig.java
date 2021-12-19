@@ -28,7 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-        auth.inMemoryAuthentication().withUser("admin").password(passwordEncoder().encode("password")).roles("USER");
+
     }
 
     @Bean
@@ -41,7 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 // dont authenticate this particular request
-                .authorizeRequests().antMatchers("/api/v1/auth").permitAll().
+                .authorizeRequests().antMatchers("/api/v1/auth/", "/api/v1/auth/authenticate","/api/v1/auth/user").permitAll().
                 // all other requests need to be authenticated
                         anyRequest().authenticated().and().
                 // make sure we use stateless session; session won't be used to
