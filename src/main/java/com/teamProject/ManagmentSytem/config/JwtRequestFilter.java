@@ -1,6 +1,7 @@
 package com.teamProject.ManagmentSytem.config;
 
 import java.io.IOException;
+import java.util.Enumeration;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -36,6 +37,14 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         final String requestTokenHeader = request.getHeader("Authorization");
+        System.out.println(requestTokenHeader);
+        Enumeration<String> headerNames = request.getHeaderNames();
+
+        if (headerNames != null) {
+            while (headerNames.hasMoreElements()) {
+                System.out.println("Header: " + request.getHeader(headerNames.nextElement()));
+            }
+        }
 
         String username = null;
         String jwtToken = null;
@@ -47,6 +56,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 username = jwtTokenUtil.getUsernameFromToken(jwtToken);
             } catch (IllegalArgumentException e) {
                 System.out.println("Unable to get JWT Token");
+                System.out.println(e.getMessage());
             } catch (ExpiredJwtException e) {
                 System.out.println("JWT Token has expired");
             }

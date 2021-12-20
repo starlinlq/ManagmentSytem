@@ -26,6 +26,11 @@ public class Profile {
     private String lastName;
     private Date dateOfBirth;
     private String department;
+    private String address;
+    private String gender;
+    private String emergencyNumber;
+    private String phoneNumber;
+    private String state;
     private int salary = 0;
 
     // Default values as these may not apply to all users.

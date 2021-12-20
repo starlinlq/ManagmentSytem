@@ -24,6 +24,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/auth")
+@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:3000/register"})
 public class AuthController {
     @Autowired
     private UserService userService;
@@ -52,7 +53,6 @@ public class AuthController {
         UserDto userDto = userService.toUserDto(newUser);
         userDto.setToken(jwtTokenUtil.generateToken(new UserDetailsImpl(newUser)));
         return ResponseEntity.ok(userDto);
-
     }
 
     // return all users

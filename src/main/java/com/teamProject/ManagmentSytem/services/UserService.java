@@ -55,7 +55,7 @@ public class UserService {
 
     public UserDto toUserDto(User user){return UserMapper.toUserDto(user);}
 
-    public static class UserMapper{
+    public static class UserMapper {
         static UserDto toUserDto(User user){
             return UserDto.builder()
                     .roles(user.getRoles())
