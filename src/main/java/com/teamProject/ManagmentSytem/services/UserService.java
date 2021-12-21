@@ -14,6 +14,7 @@ import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -38,8 +39,8 @@ public class UserService {
 
     // Read All users
     @Transactional
-    public List<User> readAllUsers(){
-        return userRepository.findAll();
+    public List<UserDto> readAllUsers(){
+        return  userRepository.findAll().stream().map(UserMapper::toUserDto).collect(Collectors.toList());
     }
 
     // Read one user by id

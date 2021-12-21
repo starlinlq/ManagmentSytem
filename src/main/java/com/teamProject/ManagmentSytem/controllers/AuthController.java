@@ -56,11 +56,10 @@ public class AuthController {
     }
 
     // return all users
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<?> readAll(){
         try{
-            List<User> users = userService.readAllUsers();
-            return new ResponseEntity<>(users,HttpStatus.OK);
+            return new ResponseEntity<>(userService.readAllUsers(),HttpStatus.OK);
         } catch (RuntimeException err){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
