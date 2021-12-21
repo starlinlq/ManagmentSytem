@@ -1,5 +1,6 @@
 package com.teamProject.ManagmentSytem.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -43,7 +44,8 @@ public class Profile {
     private double ratePerHour = 0;
 
     // Relations
-    @OneToOne(mappedBy = "profile")
+    @JsonIgnore
+    @OneToOne(mappedBy = "profile", cascade = CascadeType.ALL)
     private User user;
 
 }

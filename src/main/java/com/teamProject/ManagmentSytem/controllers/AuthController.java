@@ -1,5 +1,6 @@
 package com.teamProject.ManagmentSytem.controllers;
 
+import com.teamProject.ManagmentSytem.CustomResponse.JwtResponse;
 import com.teamProject.ManagmentSytem.config.UserDetailsImpl;
 import com.teamProject.ManagmentSytem.dto.UserDto;
 import com.teamProject.ManagmentSytem.entities.User;
@@ -49,10 +50,14 @@ public class AuthController {
             return new ResponseEntity<>(new UsernameTakenException("Email already taken", "Try a different email"), HttpStatus.BAD_REQUEST);
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        System.out.println(user);
         User newUser = userService.save(user);
-        UserDto userDto = userService.toUserDto(newUser);
-        userDto.setToken(jwtTokenUtil.generateToken(new UserDetailsImpl(newUser)));
-        return ResponseEntity.ok(userDto);
+        JwtResponse jwtResponse = new JwtResponse();
+        jwtResponse.setToken(jwtTokenUtil.generateToken(new UserDetailsImpl(newUser)));
+        jwtResponse.setEmail(newUser.getEmail());
+        jwtResponse.setRoles(newUser.getRoles());
+        jwtResponse.setUserName(newUser.getUsername());
+        return ResponseEntity.ok(jwtResponse);
     }
 
     // return all users
@@ -61,7 +66,8 @@ public class AuthController {
         try{
             return new ResponseEntity<>(userService.readAllUsers(),HttpStatus.OK);
         } catch (RuntimeException err){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            System.out.println(err.getMessage());
+            return new ResponseEntity<>(err.getMessage(),HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -74,10 +80,13 @@ public class AuthController {
                 .readOneUserById(authRequest.getUsername());
 
         if(user.isPresent()){
-            UserDto userDTO = userService.toUserDto(user.get());
-            userDTO.setToken(jwtTokenUtil.generateToken(new UserDetailsImpl(user.get())));
+            JwtResponse jwtResponse = new JwtResponse();
+            jwtResponse.setToken(jwtTokenUtil.generateToken(new UserDetailsImpl(user.get())));
+            jwtResponse.setEmail(user.get().getEmail());
+            jwtResponse.setRoles(user.get().getRoles());
+            jwtResponse.setUserName(user.get().getUsername());
 
-            return ResponseEntity.ok(userDTO);
+            return ResponseEntity.ok(jwtResponse);
         }
         return new ResponseEntity<String>( "Invalid user", HttpStatus.BAD_REQUEST);
     }
@@ -97,7 +106,7 @@ public class AuthController {
     public ResponseEntity<?> readOne(@RequestParam String user ){
         try{
             Optional<User> userName = userService.readOneUserById(user);
-            return new ResponseEntity<>(user,HttpStatus.OK);
+            return new ResponseEntity<>(userName.get(),HttpStatus.OK);
         } catch (RuntimeException err){
             return new ResponseEntity<>(err,HttpStatus.BAD_REQUEST);
         }

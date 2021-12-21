@@ -60,8 +60,10 @@ public class UserService {
         static UserDto toUserDto(User user){
             return UserDto.builder()
                     .roles(user.getRoles())
-                    .username(user.getUsername())
+                    .firstName(user.getProfile().getFirstName())
+                    .lastName(user.getProfile().getLastName())
                     .email(user.getEmail())
+                    .id(user.getId())
                     .build();
         }
     }
