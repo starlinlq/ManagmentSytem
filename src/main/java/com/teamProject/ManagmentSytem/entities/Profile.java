@@ -2,11 +2,9 @@ package com.teamProject.ManagmentSytem.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+
 import java.util.Date;
 
 
@@ -22,7 +20,7 @@ public class Profile {
     @GeneratedValue
     private Long id;
 //    User information
-
+    private String email;
     private String firstName;
     private String lastName;
     private Date dateOfBirth;
@@ -33,6 +31,7 @@ public class Profile {
     private String phoneNumber;
     private String state;
     private int salary = 0;
+
 
     // Default values as these may not apply to all users.
     private int overtime = 0;
@@ -47,5 +46,6 @@ public class Profile {
     @JsonIgnore
     @OneToOne(mappedBy = "profile", cascade = CascadeType.ALL)
     private User user;
+
 
 }

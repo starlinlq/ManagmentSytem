@@ -6,6 +6,7 @@ import com.teamProject.ManagmentSytem.dto.UserDto;
 import com.teamProject.ManagmentSytem.entities.User;
 import com.teamProject.ManagmentSytem.exception.EmployeeNotFoundException;
 import com.teamProject.ManagmentSytem.exception.UsernameTakenException;
+import com.teamProject.ManagmentSytem.services.ProfileService;
 import com.teamProject.ManagmentSytem.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 import com.teamProject.ManagmentSytem.util.JwtTokenUtil;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.Optional;
 
 
@@ -29,6 +29,9 @@ import java.util.Optional;
 public class AuthController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ProfileService profileService;
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
@@ -50,8 +53,9 @@ public class AuthController {
             return new ResponseEntity<>(new UsernameTakenException("Email already taken", "Try a different email"), HttpStatus.BAD_REQUEST);
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        System.out.println(user);
+
         User newUser = userService.save(user);
+
         JwtResponse jwtResponse = new JwtResponse();
         jwtResponse.setToken(jwtTokenUtil.generateToken(new UserDetailsImpl(newUser)));
         jwtResponse.setEmail(newUser.getEmail());

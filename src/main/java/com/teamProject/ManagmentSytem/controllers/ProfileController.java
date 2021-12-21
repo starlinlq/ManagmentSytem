@@ -1,8 +1,11 @@
 package com.teamProject.ManagmentSytem.controllers;
 
+import com.teamProject.ManagmentSytem.dto.ProfileDto;
 import com.teamProject.ManagmentSytem.entities.Profile;
+import com.teamProject.ManagmentSytem.exception.ProfileNotFound;
 import com.teamProject.ManagmentSytem.repositories.ProfileRepository;
 import com.teamProject.ManagmentSytem.services.ProfileService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -14,17 +17,11 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/profile")
+@CrossOrigin(origins = "http://localhost:3000/")
 public class ProfileController {
-
+    @Autowired
     ProfileService service;
 
-    @GetMapping("/welcome")
-    public ResponseEntity<?> welcome(Authentication auth){
-            UserDetails user = (UserDetails) auth.getPrincipal();
-        return ResponseEntity.ok("Welcome " + user.getUsername());
-    }
-
-    // http://localhost:8080/api/v1/profile
     @GetMapping
     public ResponseEntity<?> readAll(){
         try{
@@ -35,16 +32,20 @@ public class ProfileController {
         }
     }
 
-    // http:localhost:8080/api/v1/profile
-    @PostMapping
-    public ResponseEntity<?> createOne(@RequestBody Profile profile){
-        try{
-            service.createProfile(profile);
-            return new ResponseEntity<>(profile,HttpStatus.OK);
-        } catch (RuntimeException err) {
-            return new ResponseEntity<>("Could not add item ", HttpStatus.BAD_REQUEST);
-        }
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getSingleProfile(@PathVariable long id){
+        Optional<ProfileDto> profile = service.getProfile(id);
+
+        if(profile.isPresent()){
+            return ResponseEntity.ok(profile.get());
+        } else
+            return new ResponseEntity<>(new ProfileNotFound("Incorrect profile id", "Please use a different id"), HttpStatus.BAD_REQUEST);
     }
+
+
+
+
+
 
 
 

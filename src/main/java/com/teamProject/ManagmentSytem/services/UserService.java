@@ -63,6 +63,7 @@ public class UserService {
                     .firstName(user.getProfile().getFirstName())
                     .lastName(user.getProfile().getLastName())
                     .email(user.getEmail())
+                    .profileId(user.getProfile().getId())
                     .id(user.getId())
                     .build();
         }

@@ -1,19 +1,26 @@
 package com.teamProject.ManagmentSytem.dto;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.util.List;
+
+import java.util.Date;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDto {
-    private long id;
+public class ProfileDto {
     private String firstName;
     private String lastName;
     private String email;
-    private List<String> roles;
-    private long profileId;
+    private Date dateOfBirth;
+    private String address;
+    private String state;
+    private String gender;
+    private String phoneNumber;
+    private String emergencyNumber;
+    private String department;
+    private int salary;
 }
