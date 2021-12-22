@@ -1,5 +1,6 @@
 package com.teamProject.ManagmentSytem.services;
 
+import com.teamProject.ManagmentSytem.dto.UserDto;
 import com.teamProject.ManagmentSytem.entities.Profile;
 import com.teamProject.ManagmentSytem.entities.User;
 import com.teamProject.ManagmentSytem.repositories.UserRepository;
@@ -9,6 +10,9 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -80,23 +84,40 @@ public class UserServiceTest {
         }
     }
 
-    @Test
-    void save() {
-    }
+    @Nested
+    @DisplayName("Testing basic crud operations for: ")
+    class serviceBasicCrudOperations{
+        @Transactional
+        @Test
+        @DisplayName("Insert one user expecting True")
+        void testSave() {
+            assertDoesNotThrow(()->userService.save(user));
+        }
 
-    @Test
-    void readAllUsers() {
-    }
+        @Test
+        @DisplayName("Find all users")
+        void testReadAllUsers() {
+            List<UserDto> users = userService.readAllUsers();
+            users.forEach(System.out::println);
+            assertTrue(users.stream().findFirst().isPresent());
+        }
 
-    @Test
-    void readOneUserById() {
-    }
+        @Test
+        @DisplayName("Find one user")
+        void testReadOneUserById() {
+            assertTrue(userService.readOneUserById(userNameGood).isPresent());
+        }
 
-    @Test
-    void removeUser() {
-    }
+        @Test
+        @DisplayName("delete one user")
+        void testRemoveUser() {
+            assertDoesNotThrow(()->userService.removeUser(user.getUsername()));
+        }
 
-    @Test
-    void toUserDto() {
+        @Test
+        @DisplayName("convert user to DTO")
+        void testToUserDto() {
+
+        }
     }
 }
