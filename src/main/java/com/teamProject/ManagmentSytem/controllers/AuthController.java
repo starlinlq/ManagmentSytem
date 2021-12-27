@@ -136,7 +136,7 @@ public class AuthController {
         }
     }
 
-    // Delete a single user
+    // Delete a single users
     @DeleteMapping
     public ResponseEntity<?> deleteOne(@RequestParam long userId){
         try{
