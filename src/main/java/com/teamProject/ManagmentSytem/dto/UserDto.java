@@ -3,6 +3,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -14,6 +16,7 @@ public class UserDto {
     private String firstName;
     private String lastName;
     private String email;
+    private LocalDate hiredDate;
     private List<String> roles;
     private long profileId;
 }

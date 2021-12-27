@@ -17,6 +17,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +35,8 @@ public class User {
     @Pattern(regexp = "[a-zA-Z]{5,}")
     @Column(unique = true)
     private String username;
+    private String firstName;
+    private LocalDate hiredDate;
     @Column(unique = true)
     private String email;
     @Size(min = 8)

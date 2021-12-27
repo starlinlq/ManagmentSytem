@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.*;
 import com.teamProject.ManagmentSytem.util.JwtTokenUtil;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Optional;
 
 
@@ -53,8 +55,11 @@ public class AuthController {
             return new ResponseEntity<>(new UsernameTakenException("Email already taken", "Try a different email"), HttpStatus.BAD_REQUEST);
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setFirstName(user.getProfile().getFirstName());
+        user.setHiredDate(LocalDate.now());
 
         User newUser = userService.save(user);
+
 
         JwtResponse jwtResponse = new JwtResponse();
         jwtResponse.setToken(jwtTokenUtil.generateToken(new UserDetailsImpl(newUser)));
@@ -66,13 +71,28 @@ public class AuthController {
 
     // return all users
     @GetMapping
-    public ResponseEntity<?> readAll(){
+    public ResponseEntity<?> readAll(@RequestParam(defaultValue = "id") String[] sort,
+                                     @RequestParam(defaultValue = "0") int pageNo,
+                                     @RequestParam(defaultValue = "10") int pageSize){
+
         try{
-            return new ResponseEntity<>(userService.readAllUsers(),HttpStatus.OK);
+            return new ResponseEntity<>(userService.readAllUsers(pageNo, pageSize, sort),HttpStatus.OK);
         } catch (RuntimeException err){
             System.out.println(err.getMessage());
             return new ResponseEntity<>(err.getMessage(),HttpStatus.BAD_REQUEST);
         }
+    }
+    @GetMapping("/search")
+    public ResponseEntity<?> findByUsernameContaining(@RequestParam(defaultValue = "") String query,
+                                                      @RequestParam(defaultValue = "0") int pageNo,
+                                                      @RequestParam(defaultValue = "id") String[]  filters,
+                                                      @RequestParam(defaultValue = "10") int pageSize){
+
+       try{
+           return ResponseEntity.ok(userService.findByUsernameContaining(query, filters, pageNo, pageSize));
+       } catch(Exception ex){
+           return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+       }
     }
 
     @RequestMapping("/authenticate")
@@ -117,15 +137,15 @@ public class AuthController {
     }
 
     // Delete a single user
-    @DeleteMapping("/user")
-    public ResponseEntity<?> deleteOne(@RequestParam String user){
+    @DeleteMapping
+    public ResponseEntity<?> deleteOne(@RequestParam long userId){
         try{
-            boolean userNameExists = userService.existsByUsername(user);
+            boolean userNameExists = userService.existsById(userId);
             if (!userNameExists){
                 throw new EmployeeNotFoundException();
             }
-            userService.removeUser(user);
-            return new ResponseEntity<>(user,HttpStatus.ACCEPTED);
+            userService.deleteById(userId);
+            return new ResponseEntity<>("User deleted",HttpStatus.ACCEPTED);
         } catch (RuntimeException err){
             return new ResponseEntity<>(err,HttpStatus.BAD_REQUEST);
         }
